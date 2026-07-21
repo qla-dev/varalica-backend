@@ -42,10 +42,9 @@ header .brand span{color:var(--red)}
 
 /* Keep the mobile hero inside the viewport and align its copy with the top row. */
 @media(max-width:760px){
-  .hero-copy{margin-left:0;margin-right:0;text-align:left}
-  .eyebrow,.hero-copy>p{margin-left:0;margin-right:0}
-  .hero-actions,.hero-proof{justify-content:flex-start}
-  .text-button{justify-content:flex-start}
   .hero-art{margin-inline:auto;width:100%}
   .sunburst{height:min(410px,calc(100vw - 36px));transform:translate(-50%,-48%);width:min(410px,calc(100vw - 36px))}
 }
+
+/* The second title row starts with the first one on larger screens. */
+@media(min-width:761px){.hero h1 em{display:inline-block;font-size:.8em;margin-left:0}}
