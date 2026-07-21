@@ -14,6 +14,7 @@ import bomb from '../../../../raja/assets/games/bomb.webp';
 import never from '../../../../raja/assets/games/Nnever-have-i-ever.webp';
 import word from '../../../../raja/assets/games/word.webp';
 import music from '../../../../raja/assets/games/music.webp';
+import qlaLogo from '../../../../../tap/public/images/logo-qla.png';
 
 const APP_STORE_URL = import.meta.env.VITE_APP_STORE_URL || 'https://apps.apple.com/us/search?term=Varalica';
 const PLAY_STORE_URL = import.meta.env.VITE_PLAY_STORE_URL || 'https://play.google.com/store/apps/details?id=varalica.qla.dev';
@@ -119,6 +120,16 @@ function MiniGame() {
   );
 }
 
+const legalPages = {
+  privacy: { title: 'Politika privatnosti', intro: 'Ovdje objašnjavamo koje podatke Varalica koristi i kako ih štitimo.', sections: [['Podaci koje koristimo', 'Za igranje nije potrebna registracija. Aplikacija može koristiti tehničke podatke potrebne za stabilan rad, kupovine i dijagnostiku grešaka.'], ['Kupovine i vanjske usluge', 'Apple, Google i RevenueCat mogu obrađivati podatke o kupovinama prema vlastitim pravilima privatnosti. Varalica ne prima podatke platnih kartica.'], ['Djeca i sigurnost', 'Kupovine trebaju izvršavati odrasle osobe ili djeca uz saglasnost roditelja ili staratelja.'], ['Kontakt', 'Za pitanja o privatnosti pišite na hello@qla.dev.']] },
+  terms: { title: 'Uslovi korištenja', intro: 'Korištenjem Varalice prihvataš ove jednostavne uslove.', sections: [['Korištenje aplikacije', 'Varalica je party igra namijenjena privatnoj zabavi. Korisnik je odgovoran da igru i sadržaj koristi obzirno i u skladu sa zakonom.'], ['Digitalni sadržaj', 'Dostupnost igara i pitanja može se mijenjati kroz ažuriranja. Premium sadržaj i kupovine podliježu pravilima prodavnice preko koje su kupljeni.'], ['Intelektualno vlasništvo', 'Naziv, dizajn, ilustracije, kod i sadržaj Varalice pripadaju qla.dev-u i ne smiju se kopirati ili distribuirati bez dozvole.'], ['Kontakt', 'Za podršku ili pravna pitanja pišite na hello@qla.dev.']] },
+  cookies: { title: 'Politika kolačića', intro: 'Varalica web stranica koristi samo ono što joj treba za pouzdan rad.', sections: [['Šta su kolačići', 'Kolačići su male tekstualne datoteke koje web stranica može sačuvati u pregledniku radi sigurnosti i tehničkog funkcionisanja.'], ['Neophodni kolačići', 'Možemo koristiti samo tehnički neophodne kolačiće za sigurnost, usmjeravanje i stabilan rad stranice.'], ['Analitika i oglasi', 'Trenutno ne koristimo oglasne kolačiće niti prodajemo podatke za oglašavanje.'], ['Mobilna aplikacija', 'Native iOS i Android aplikacija ne koristi web kolačiće za samo igranje. Vanjske platforme primjenjuju vlastita pravila.']] }
+};
+
+function LegalPage({ page }) {
+  return <main className="legal-page"><header className="legal-header"><Brand /><a href="/">Nazad na početnu</a></header><section className="legal-hero"><span className="kicker">VARALICA · QLA.DEV</span><h1>{page.title}</h1><p>{page.intro}</p></section><section className="legal-content">{page.sections.map(([title, body], index) => <article key={title}><b>0{index + 1}</b><div><h2>{title}</h2><p>{body}</p></div></article>)}</section><footer className="legal-footer"><a className="qla-signature" href="https://qla.dev" target="_blank" rel="noreferrer"><span>Proizvod</span><img src={qlaLogo} alt="qla.dev" /></a><nav><a href="/privacy">Privatnost</a><a href="/terms">Uslovi korištenja</a><a href="/cookies">Kolačići</a></nav></footer></main>;
+}
+
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showAll, setShowAll] = useState(false);
@@ -137,6 +148,9 @@ function App() {
   }, [menuOpen]);
 
   const closeMenu = () => setMenuOpen(false);
+  const legalPage = legalPages[window.location.pathname.replace(/^\//, '').replace(/\/$/, '')];
+
+  if (legalPage) return <LegalPage page={legalPage} />;
 
   return (
     <main id="top">
@@ -241,7 +255,7 @@ function App() {
 
       <footer>
         <div className="footer-top"><Brand/><p>Jedan telefon.<br/>Cijela ekipa.</p><nav><a href="#igre">Igre</a><a href="#kako">Kako radi</a><a href="#preuzmi">Preuzmi</a></nav></div>
-        <div className="footer-bottom"><span>© {new Date().getFullYear()} Varalica. Sva prava zadržana.</span><div><a href="mailto:hello@qla.dev">Kontakt</a><a href="#">Privatnost</a><a href="#">Uslovi korištenja</a></div></div>
+        <div className="footer-bottom"><span>© {new Date().getFullYear()} Varalica. Sva prava zadržana.</span><a className="qla-signature" href="https://qla.dev" target="_blank" rel="noreferrer"><span>Proizvod</span><img src={qlaLogo} alt="qla.dev" /></a><div><a href="mailto:hello@qla.dev">Kontakt</a><a href="/privacy">Privatnost</a><a href="/terms">Uslovi korištenja</a><a href="/cookies">Kolačići</a></div></div>
       </footer>
     </main>
   );
