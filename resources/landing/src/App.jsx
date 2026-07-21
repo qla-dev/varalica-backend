@@ -5,6 +5,7 @@ import {
 } from 'lucide-react';
 import logo from '../../../../raja/assets/varalica-header-logo.png';
 import king from '../../../../raja/assets/varalica-king.png';
+import crew from '../assets/varalica-ekipa.png';
 import icon from '../../../../raja/assets/icon.png';
 import impostor from '../../../../raja/assets/games/imposter.webp';
 import truthDare from '../../../../raja/assets/games/istina-izazov.webp';
@@ -187,10 +188,10 @@ function App() {
           <div className="speech speech-two">Sumnjivo...</div>
           <div className="game-chip"><Crown /><span><small>VEČERAŠNJI KRALJ</small><b>Ko najbolje vara?</b></span></div>
         </div>
-        <a className="scroll-cue" href="#igre"><ArrowDown /> skrolaj za igre</a>
       </section>
 
       <div className="marquee" aria-hidden="true"><div>{[0,1].map(group => <span key={group}>PRONAĐI VARALICU ✦ ISTINA ILI IZAZOV ✦ ŠTA BI RADIJE ✦ DVA SRCA ✦ KO IMA BOMBU ✦ </span>)}</div></div>
+      <a className="scroll-cue" href="#igre"><ArrowDown /> skrolaj za igre</a>
 
       <section className="games-section" id="igre">
         <div className="section-heading">
@@ -261,7 +262,10 @@ function App() {
         </div>
       </section>
 
-      <section className="final-cta"><Heart fill="currentColor"/><h2>Ko donosi telefon?</h2><p>Ti. Ostali neka donesu dobre izgovore.</p><div className="store-buttons"><StoreButton store="apple"/><StoreButton store="play"/></div></section>
+      <section className="final-cta">
+        <div className="final-cta-copy"><Heart fill="currentColor"/><span className="kicker">OKUPI EKIPU</span><h2>Ko donosi telefon?</h2><p>Ti. Ostali neka donesu dobre izgovore.</p><div className="store-buttons"><StoreButton store="apple"/><StoreButton store="play"/></div></div>
+        <div className="final-crew"><span>RAJA JE SPREMNA!</span><img src={crew} alt="Četiri Varalica mačka spremna za igru" /></div>
+      </section>
 
       <footer>
         <div className="footer-top"><Brand/><p>Jedan telefon.<br/>Cijela ekipa.</p><nav><a href="#igre">Igre</a><a href="#kako">Kako radi</a><a href="#preuzmi">Preuzmi</a></nav></div>
