@@ -10,6 +10,8 @@ class TruthDareCategory extends Model
 {
     protected $guarded = [];
 
+    protected $casts = ['is_free' => 'boolean'];
+
     public function questions(): HasMany
     {
         return $this->hasMany(TruthDareQuestion::class);

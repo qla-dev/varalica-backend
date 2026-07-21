@@ -10,6 +10,8 @@ class ImpostorCategory extends Model
 {
     protected $guarded = [];
 
+    protected $casts = ['is_free' => 'boolean'];
+
     public function words(): HasMany
     {
         return $this->hasMany(ImpostorWord::class);
