@@ -29,6 +29,24 @@ const games = [
   { title: 'Disco izazov', players: '2–10 igrača', color: '#7c3aed', image: music },
 ];
 
+const gameGuides = [
+  {
+    title: 'Pronađi Varalicu', tag: 'Blef, tragovi i sumnjivi pogledi', image: impostor, accent: '#f97316',
+    intro: 'Svi znaju tajnu riječ — osim Varalice. Hoće li se odati lošim tragom ili izvući čistim blefom?',
+    rules: ['Odaberite broj igrača, Varalica, kategorije i trajanje runde.', 'Dodaj telefon svakom igraču da tajno vidi riječ ili svoju ulogu.', 'Redom dajte po jedan trag, bez izgovaranja tajne riječi.', 'Kad vrijeme istekne, svaki igrač zaključava svoj glas.', 'Aplikacija otkriva Varalicu i pobjednike runde.']
+  },
+  {
+    title: 'Istina ili izazov', tag: 'Koliko dobro stvarno poznaješ raju?', image: truthDare, accent: '#0ea5e9',
+    intro: 'Svaki potez donosi izbor: iskren odgovor ili izazov koji će ekipa još dugo prepričavati.',
+    rules: ['Odaberite broj igrača i kategorije koje odgovaraju ekipi.', 'Aplikacija proziva igrača koji je na potezu.', 'Igrač bira Istinu ili Izazov i otkriva svoju karticu.', 'Odgovori iskreno ili izvrši izazov pred rajom.', 'Dodirni dalje — telefon i potez idu sljedećem igraču.']
+  },
+  {
+    title: 'Šta bi radije', tag: 'Dva izbora. Nijedan normalan.', image: rather, accent: '#ef4444',
+    intro: 'Brzi izbori postaju ozbiljne debate čim neko mora objasniti zašto je odabrao baš to.',
+    rules: ['Odaberite igrače i jednu ili više kategorija pitanja.', 'Igrač na potezu naglas čita obje ponuđene opcije.', 'Odaberi jednu opciju — nema trećeg izlaza.', 'Pogledaj procenat i odbrani svoj izbor pred ekipom.', 'Predaj telefon sljedećem igraču za novi nemogući par.']
+  }
+];
+
 const suspects = [
   { name: 'Miki', clue: 'More', emoji: '🌊', color: '#2563eb' },
   { name: 'Luna', clue: 'Plaža', emoji: '🏖️', color: '#ec4899' },
@@ -176,6 +194,25 @@ function App() {
         </div>
         {!showAll && <button className="outline-button" onClick={() => setShowAll(true)}>Pokaži sve igre <ChevronRight /></button>}
       </section>
+
+      <div className="game-guides" id="pravila">
+        {gameGuides.map((guide, guideIndex) => (
+          <section className={`guide-section ${guideIndex % 2 ? 'guide-reverse' : ''}`} key={guide.title} style={{ '--guide-accent': guide.accent }}>
+            <div className="guide-visual">
+              <span className="guide-index">0{guideIndex + 1}</span>
+              <div className="guide-image-wrap"><img src={guide.image} alt={guide.title} /></div>
+              <span className="guide-sticker">IGRAJ KAO RAJA</span>
+            </div>
+            <div className="guide-copy">
+              <span className="kicker">KAKO SE IGRA</span>
+              <h2>{guide.title}</h2>
+              <p className="guide-tag">{guide.tag}</p>
+              <p className="guide-intro">{guide.intro}</p>
+              <ol>{guide.rules.map((rule, ruleIndex) => <li key={rule}><b>{ruleIndex + 1}</b><span>{rule}</span></li>)}</ol>
+            </div>
+          </section>
+        ))}
+      </div>
 
       <section className="how-section" id="kako">
         <div className="how-title"><span className="kicker">NEMA KOMPLIKACIJA</span><h2>Telefon na sto.<br/><em>Raja u krug.</em></h2></div>
