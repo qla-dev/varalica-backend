@@ -18,14 +18,14 @@ class GameContentApiTest extends TestCase
     public function test_each_game_exposes_categories_and_content(): void
     {
         $routes = [
-            'impostor' => 'words',
-            'truth-dare' => 'questions',
-            'rather' => 'questions',
-            'dva-srca' => 'questions',
-            'guess-word' => 'words',
+            'impostor' => ['words', 240],
+            'truth-dare' => ['questions', 240],
+            'rather' => ['questions', 240],
+            'dva-srca' => ['questions', 200],
+            'guess-word' => ['words', 200],
         ];
 
-        foreach ($routes as $game => $resource) {
+        foreach ($routes as $game => [$resource, $itemCount]) {
             $this->getJson("/api/{$game}/categories")
                 ->assertOk()
                 ->assertJsonCount(20, 'data')
@@ -41,7 +41,7 @@ class GameContentApiTest extends TestCase
 
             $this->getJson("/api/{$game}/{$resource}")
                 ->assertOk()
-                ->assertJsonCount(200, 'data')
+                ->assertJsonCount($itemCount, 'data')
                 ->assertJsonPath('data.0.category.slug', fn ($slug) => is_string($slug) && $slug !== '')
                 ->assertJsonPath('data.0.category.subcategory.id', fn ($id) => is_int($id));
         }
@@ -51,15 +51,15 @@ class GameContentApiTest extends TestCase
     {
         $this->getJson('/api/impostor/words?category=zivotinje')
             ->assertOk()
-            ->assertJsonCount(10, 'data');
+            ->assertJsonCount(50, 'data');
 
         $this->getJson('/api/truth-dare/questions?type=truth')
             ->assertOk()
-            ->assertJsonCount(100, 'data');
+            ->assertJsonCount(120, 'data');
 
         $subcategoryId = $this->getJson('/api/impostor/subcategories')->json('data.0.id');
         $this->getJson("/api/impostor/words?subcategory_id={$subcategoryId}")
             ->assertOk()
-            ->assertJsonCount(70, 'data');
+            ->assertJsonCount(110, 'data');
     }
 }

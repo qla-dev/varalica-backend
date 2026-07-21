@@ -7,6 +7,7 @@ use App\Models\GuessWordWord;
 use App\Models\ImpostorWord;
 use App\Models\RatherQuestion;
 use App\Models\TruthDareQuestion;
+use App\Support\StarterFreeContent;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
@@ -21,13 +22,13 @@ class GameContentSeederTest extends TestCase
 
         $expectedCounts = [
             'impostor_categories' => 20,
-            'impostor_words' => 200,
+            'impostor_words' => 240,
             'impostor_subcategories' => 3,
             'truth_dare_categories' => 20,
-            'truth_dare_questions' => 200,
+            'truth_dare_questions' => 240,
             'truth_dare_subcategories' => 3,
             'rather_categories' => 20,
-            'rather_questions' => 200,
+            'rather_questions' => 240,
             'rather_subcategories' => 3,
             'dva_srca_categories' => 20,
             'dva_srca_questions' => 200,
@@ -47,8 +48,11 @@ class GameContentSeederTest extends TestCase
             $this->assertSame(1, DB::table("{$game}_categories")->where('is_free', true)->count());
         }
 
-        $this->assertSame(100, DB::table('truth_dare_questions')->where('type', 'truth')->count());
-        $this->assertSame(100, DB::table('truth_dare_questions')->where('type', 'dare')->count());
+        $this->assertSame(120, DB::table('truth_dare_questions')->where('type', 'truth')->count());
+        $this->assertSame(120, DB::table('truth_dare_questions')->where('type', 'dare')->count());
+        $this->assertSame(50, DB::table('impostor_words')->where('impostor_category_id', 1)->count());
+        $this->assertSame(50, DB::table('truth_dare_questions')->where('truth_dare_category_id', 1)->count());
+        $this->assertSame(50, DB::table('rather_questions')->where('rather_category_id', 1)->count());
     }
 
     public function test_seeded_items_are_connected_to_their_categories(): void
@@ -72,11 +76,34 @@ class GameContentSeederTest extends TestCase
         $this->seed();
 
         $hints = ImpostorWord::query()->pluck('hint');
-        $this->assertCount(200, $hints);
+        $this->assertCount(240, $hints);
         foreach ($hints as $hint) {
             $this->assertCount(2, preg_split('/\s+/u', trim($hint)));
         }
 
         $this->assertDatabaseHas('impostor_words', ['word' => 'Lubenica', 'hint' => 'Ljetno voće']);
+    }
+
+    public function test_free_starter_expansion_contains_forty_unique_items_per_active_game(): void
+    {
+        $impostorWords = array_column(StarterFreeContent::IMPOSTOR_WORDS, 0);
+        $truthDareQuestions = array_column(StarterFreeContent::TRUTH_DARE, 1);
+        $ratherPairs = array_map(
+            fn (array $pair) => mb_strtolower($pair[0].'|'.$pair[1]),
+            StarterFreeContent::RATHER_QUESTIONS,
+        );
+
+        $this->assertCount(40, $impostorWords);
+        $this->assertCount(40, array_unique(array_map('mb_strtolower', $impostorWords)));
+        $this->assertCount(40, $truthDareQuestions);
+        $this->assertCount(40, array_unique(array_map('mb_strtolower', $truthDareQuestions)));
+        $this->assertCount(40, $ratherPairs);
+        $this->assertCount(40, array_unique($ratherPairs));
+        $this->assertCount(20, array_filter(StarterFreeContent::TRUTH_DARE, fn (array $item) => $item[0] === 'truth'));
+        $this->assertCount(20, array_filter(StarterFreeContent::TRUTH_DARE, fn (array $item) => $item[0] === 'dare'));
+
+        foreach (StarterFreeContent::IMPOSTOR_WORDS as [$word, $hint]) {
+            $this->assertCount(2, preg_split('/\s+/u', trim($hint)), "Hint za {$word} mora imati dvije riječi.");
+        }
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Support\StarterFreeContent;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -22,5 +23,7 @@ class StarterFreeCategorySeeder extends Seeder
                 ->where('slug', $slug)
                 ->update(['is_free' => true]);
         }
+
+        StarterFreeContent::add();
     }
 }
