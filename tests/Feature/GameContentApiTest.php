@@ -31,7 +31,7 @@ class GameContentApiTest extends TestCase
                 ->assertJsonCount(20, 'data')
                 ->assertJsonPath('data.0.subcategory.id', fn ($id) => is_int($id))
                 ->assertJsonPath('data.0.subtitle', fn ($subtitle) => is_string($subtitle) && $subtitle !== '')
-                ->assertJsonPath('data.0.is_free', false)
+                ->assertJsonPath('data.0.is_free', true)
                 ->assertJsonPath('data.0.color', fn ($color) => is_string($color) && str_starts_with($color, '#'))
                 ->assertJsonPath('data.0.emoji', fn ($emoji) => is_string($emoji) && $emoji !== '');
 

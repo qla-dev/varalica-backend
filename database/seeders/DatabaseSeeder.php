@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             DvaSrcaSeeder::class,
             GuessWordSeeder::class,
             GameStructureSeeder::class,
+            StarterFreeCategorySeeder::class,
         ]);
     }
 }

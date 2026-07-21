@@ -44,6 +44,7 @@ class GameContentSeederTest extends TestCase
         foreach (['impostor', 'truth_dare', 'rather', 'dva_srca', 'guess_word'] as $game) {
             $this->assertSame(0, DB::table("{$game}_categories")->where('subtitle', '')->count());
             $this->assertSame(0, DB::table("{$game}_categories")->where('subtitle', 'like', '%na temu%')->count());
+            $this->assertSame(1, DB::table("{$game}_categories")->where('is_free', true)->count());
         }
 
         $this->assertSame(100, DB::table('truth_dare_questions')->where('type', 'truth')->count());
