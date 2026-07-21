@@ -22,6 +22,10 @@ header{align-items:center;display:flex;height:76px;justify-content:space-between
 
 /* Shared dashed section delimiters. */
 .game-guides{border-top:3px dashed #b9a28d}.guide-section+.guide-section{border-top:3px dashed #b9a28d}.how-section{border-bottom:3px dashed #b9a28d;border-top:3px dashed #b9a28d}.footer-bottom{align-items:center;border-top:2px dashed #514a45;gap:24px}
+
+/* Offline and KING access explanation. */
+.access-modes{display:grid;gap:10px;margin-top:26px;max-width:560px}.access-modes article{align-items:center;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28);border-radius:16px;display:flex;gap:12px;padding:13px 15px;text-align:left}.access-modes article>svg{flex:0 0 auto;height:25px;width:25px}.access-modes article>span{display:flex;flex-direction:column;gap:3px}.access-modes b{font-family:Arial,sans-serif;font-size:13px}.access-modes small{color:rgba(255,255,255,.78);font-family:Arial,sans-serif;font-size:11px;line-height:1.4}.access-modes .king-access{background:#171717;border-color:#facc15}.access-modes .king-access>svg{color:#facc15}
+@media(max-width:760px){.access-modes{margin-left:auto;margin-right:auto}.access-modes article{padding:13px}.access-modes b{font-size:12px}}
 .qla-signature{align-items:center;display:flex;gap:9px}.qla-signature span{color:#8e8580;font-family:Arial,sans-serif;font-size:9px;text-transform:uppercase}.qla-signature img{background:#fff;border-radius:7px;height:28px;object-fit:contain;padding:5px 8px;width:100px}
 
 /* Legal pages reuse the Varalica visual language without the marketing navigation. */

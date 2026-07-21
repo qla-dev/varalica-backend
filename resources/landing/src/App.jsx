@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import {
   Apple, ArrowDown, Check, ChevronRight, Crown, Download, Gamepad2,
-  Heart, Menu, Play, RotateCcw, Sparkles, Users, X,
+  Heart, Menu, Play, RotateCcw, Sparkles, Users, WifiOff, X,
 } from 'lucide-react';
 import logo from '../../../../raja/assets/varalica-header-logo.png';
 import king from '../../../../raja/assets/varalica-king.png';
@@ -243,7 +243,17 @@ function App() {
       </section>
 
       <section className="download-section" id="preuzmi">
-        <div className="download-copy"><span className="kicker light">PARTY U DŽEPU</span><h2>Uvijek spremna<br/>za igru.</h2><p>Preuzmi Varalicu i pretvori svako okupljanje u večer koju ćete prepričavati.</p><div className="store-buttons"><StoreButton store="apple" light/><StoreButton store="play" light/></div><div className="features"><span><Check /> Bez reklama usred runde</span><span><Check /> Nove igre i pitanja</span><span><Check /> Igrajte offline</span></div></div>
+        <div className="download-copy">
+          <span className="kicker light">PARTY U DŽEPU</span>
+          <h2>Uvijek spremna<br/>za igru.</h2>
+          <p>Preuzmi Varalicu i pretvori svako okupljanje u večer koju ćete prepričavati.</p>
+          <div className="access-modes">
+            <article><WifiOff /><span><b>Radi i bez interneta</b><small>Lokalne igre i kategorije uvijek su dostupne offline.</small></span></article>
+            <article className="king-access"><Crown /><span><b>KING Pro otključava online</b><small>Sav online sadržaj, nove kategorije i budući dodaci.</small></span></article>
+          </div>
+          <div className="store-buttons"><StoreButton store="apple" light/><StoreButton store="play" light/></div>
+          <div className="features"><span><Check /> Bez reklama usred runde</span><span><Check /> Bez registracije</span><span><Check /> Igrajte offline</span></div>
+        </div>
         <div className="phone-wrap">
           <div className="phone-glow" />
           <div className="phone"><div className="phone-island"/><img src={icon} alt="Varalica aplikacija"/><b>VARALICA</b><small>PARTY IGRE ZA RAJU</small><button>IGRAJ</button></div>
