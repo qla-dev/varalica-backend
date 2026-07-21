@@ -24,8 +24,8 @@ const games = [
   { title: 'Istina ili izazov', players: '2–20 igrača', color: '#0ea5e9', image: truthDare, live: true },
   { title: 'Šta bi radije', players: '2–15 igrača', color: '#ef4444', image: rather, live: true },
   { title: 'Dva srca', players: 'Tačno 2 igrača', color: '#e11d48', image: twoHearts },
-  { title: 'Ko ima bombu', players: '3–12 igrača', color: '#18181b', image: bomb },
   { title: 'Nikad nisam', players: '2–20 igrača', color: '#eab308', image: never },
+  { title: 'Ko ima bombu', players: '3–12 igrača', color: '#18181b', image: bomb },
   { title: 'Pogodi pojam', players: '2–12 igrača', color: '#db2777', image: word },
   { title: 'Disco izazov', players: '2–10 igrača', color: '#7c3aed', image: music },
 ];
