@@ -1,0 +1,10 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Serve the built landing page directly at the domain root.
+    RewriteRule ^$ public/dist/index.html [L]
+
+    # Route API requests and built assets through Laravel's public directory.
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
