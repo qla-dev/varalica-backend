@@ -6,6 +6,13 @@ use Tests\TestCase;
 
 class StorefrontLegalTest extends TestCase
 {
+    public function test_apple_download_redirects_to_the_app_store(): void
+    {
+        $this->get('/apple-download')->assertRedirect(
+            'https://apps.apple.com/us/app/varalica-imposter-igrica/id6784401796'
+        );
+    }
+
     public function test_legal_pages_are_available(): void
     {
         foreach (['privacy', 'terms', 'cookies'] as $page) {
@@ -26,5 +33,6 @@ class StorefrontLegalTest extends TestCase
         $this->assertStringContainsString('Politika privatnosti', $bundle);
         $this->assertStringContainsString('Uslovi korištenja', $bundle);
         $this->assertStringContainsString('Politika kolačića', $bundle);
+        $this->assertStringContainsString('/apple-download', $bundle);
     }
 }

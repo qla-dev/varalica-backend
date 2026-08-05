@@ -17,7 +17,7 @@ import word from '../../../../raja/assets/games/word.webp';
 import music from '../../../../raja/assets/games/music.webp';
 import qlaLogo from '../../../../../tap/public/images/logo-qla.png';
 
-const APP_STORE_URL = import.meta.env.VITE_APP_STORE_URL || 'https://apps.apple.com/us/search?term=Varalica';
+const APP_STORE_URL = import.meta.env.VITE_APP_STORE_URL || '/apple-download';
 const PLAY_STORE_URL = import.meta.env.VITE_PLAY_STORE_URL || 'https://play.google.com/store/apps/details?id=varalica.qla.dev';
 
 const games = [

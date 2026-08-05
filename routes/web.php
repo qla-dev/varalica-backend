@@ -2,6 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 
+Route::redirect(
+    '/apple-download',
+    'https://apps.apple.com/us/app/varalica-imposter-igrica/id6784401796'
+);
+
 Route::get('/', fn () => response()->file(public_path('dist/index.html')))
     ->withoutMiddleware([
         \Illuminate\Session\Middleware\StartSession::class,
