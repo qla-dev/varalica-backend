@@ -7,106 +7,112 @@ use Illuminate\Support\Facades\DB;
 final class StarterFreeContent
 {
     public const IMPOSTOR_WORDS = [
-        ['Vuk', 'Noćni čopor'], ['Medvjed', 'Šumski div'], ['Zec', 'Brzi skakač'],
-        ['Zebra', 'Prugasti konj'], ['Nosorog', 'Rogati div'], ['Nilski konj', 'Riječni kolos'],
-        ['Krokodil', 'Močvarni predator'], ['Majmun', 'Nestašni penjač'], ['Gorila', 'Snažni primat'],
-        ['Koala', 'Eukaliptus medvjed'], ['Deva', 'Pustinjski putnik'], ['Konj', 'Grivasti trkač'],
-        ['Krava', 'Domaće govedo'], ['Ovca', 'Vunasta životinja'], ['Koza', 'Planinska brada'],
-        ['Pas', 'Vjerni ljubimac'], ['Mačka', 'Kućni lovac'], ['Hrčak', 'Džepni glodar'],
-        ['Kornjača', 'Spori oklop'], ['Zmija', 'Tihi gmizavac'], ['Orao', 'Nebeski lovac'],
-        ['Papagaj', 'Šarena pričalica'], ['Flamingo', 'Ružičasta ptica'], ['Paun', 'Raskošni rep'],
-        ['Noj', 'Brza ptica'], ['Ajkula', 'Morski predator'], ['Kit', 'Okeanski div'],
-        ['Hobotnica', 'Osam krakova'], ['Foka', 'Brkati plivač'], ['Morski konjić', 'Morski jahač'],
-        ['Žaba', 'Močvarni skakač'], ['Leptir', 'Krilata ljepotica'], ['Pčela', 'Medena radnica'],
-        ['Mrav', 'Sitni radnik'], ['Pauk', 'Mrežni lovac'], ['Puž', 'Spori puzač'],
-        ['Jež', 'Bodljikava kugla'], ['Rakun', 'Maskirani lopov'], ['Vjeverica', 'Šumski akrobat'],
-        ['Kameleon', 'Šarena kamuflaža'],
+        ['Pećina', 'Podzemna šupljina'], ['Vulkan', 'Vatrena planina'],
+        ['Kanjon', 'Duboka dolina'], ['Livada', 'Travnata ravnica'],
+        ['Pustinja', 'Pješčana ravnica'], ['Ostrvo', 'Okruženo morem'],
+        ['Glečer', 'Ledena rijeka'], ['Izvor', 'Početak rijeke'],
+        ['Potok', 'Mala rijeka'], ['Brdo', 'Niska uzvisina'],
+        ['Dolina', 'Nisko zemljište'], ['Stijena', 'Tvrdi kamen'],
+        ['Litica', 'Strma stijena'], ['Močvara', 'Vlažno zemljište'],
+        ['Prašuma', 'Gusta šuma'], ['Savana', 'Tropska ravnica'],
+        ['Gejzir', 'Vrući mlaz'], ['Lavina', 'Snježna bujica'],
+        ['Talasi', 'Morski pokreti'], ['Pješčana dina', 'Pješčano brdo'],
+        ['Koraljni greben', 'Podvodni ekosistem'], ['Sjeverna svjetlost', 'Polarna svjetlost'],
+        ['Horizont', 'Daleka granica'], ['Rosa', 'Jutarnje kapljice'],
+        ['Inje', 'Ledeni kristali'], ['Grad', 'Ledene kuglice'],
+        ['Munja', 'Električni bljesak'], ['Grmljavina', 'Olujni zvuk'],
+        ['Pahulja', 'Snježni kristal'], ['Ledenica', 'Viseći led'],
+        ['Mahovina', 'Zeleni pokrivač'], ['Paprat', 'Šumska biljka'],
+        ['Lopoč', 'Vodeni cvijet'], ['Trska', 'Močvarna biljka'],
+        ['Bor', 'Zimzeleno drvo'], ['Hrast', 'Snažno drvo'],
+        ['Kesten', 'Šumski plod'], ['Žir', 'Hrastov plod'],
+        ['Kamenčić', 'Mali kamen'], ['Blato', 'Mokra zemlja'],
     ];
 
     public const TRUTH_DARE = [
-        ['truth', 'Ko je bio tvoj prvi pravi prijatelj i šta vas je povezalo?'],
-        ['truth', 'Koju osobinu najviše cijeniš kod najboljeg prijatelja?'],
-        ['truth', 'Jesi li ikada prešutio/la nešto prijatelju da ga ne povrijediš?'],
-        ['truth', 'Koji trenutak s prijateljima te uvijek nasmije?'],
-        ['truth', 'Šta je najljepše što je prijatelj uradio za tebe?'],
-        ['truth', 'Koji prijatelj te najbolje razumije bez mnogo objašnjavanja?'],
-        ['truth', 'Jesi li se ikada pomirio/la s prijateljem nakon velike svađe?'],
-        ['truth', 'Koju avanturu bi najradije ponovio/la sa svojom ekipom?'],
-        ['truth', 'Šta nikada ne bi oprostio/la bliskom prijatelju?'],
-        ['truth', 'Kome se prvom javiš kada ti treba iskren savjet?'],
-        ['truth', 'Koji prijatelj ima najsmješniju naviku?'],
-        ['truth', 'Jesi li ikada bio/la ljubomoran/na na prijateljev uspjeh?'],
-        ['truth', 'Koja pjesma te podsjeća na tvoju ekipu?'],
-        ['truth', 'S kim bi iz ekipe najlakše živio/la kao cimer?'],
-        ['truth', 'Ko te je od prijatelja najviše iznenadio svojom dobrotom?'],
-        ['truth', 'Koju zajedničku tajnu još uvijek dobro čuvate?'],
-        ['truth', 'Šta misliš da tvoji prijatelji najviše vole kod tebe?'],
-        ['truth', 'Kada si posljednji put priznao/la prijatelju da si pogriješio/la?'],
-        ['truth', 'Koji bi prijatelj najbolje organizovao zajedničko putovanje?'],
-        ['truth', 'Šta za tebe razlikuje poznanika od pravog prijatelja?'],
-        ['dare', 'Izaberi nekoga iz ekipe i reci mu iskren kompliment.'],
-        ['dare', 'Imitiraj smiješnu naviku jednog prijatelja dok ostali pogađaju koga.'],
-        ['dare', 'Pošalji prijatelju kojeg dugo nisi čuo/la poruku da misliš na njega.'],
-        ['dare', 'Ispričaj najkraću moguću priču o najboljem danu s ekipom.'],
-        ['dare', 'Smisli naziv za vašu ekipu i objasni zašto vam pristaje.'],
-        ['dare', 'Opiši osobu s lijeve strane koristeći samo tri lijepe riječi.'],
-        ['dare', 'Odglumi kako izgleda vaše idealno zajedničko putovanje.'],
-        ['dare', 'Otpjevaj dio pjesme koja najbolje opisuje tvoje prijatelje.'],
-        ['dare', 'Zahvali jednoj osobi u krugu za nešto konkretno što je uradila.'],
-        ['dare', 'Napravi tajno rukovanje s osobom preko puta sebe.'],
-        ['dare', 'Ispričaj vic koji bi sigurno nasmijao tvog najboljeg prijatelja.'],
-        ['dare', 'Dopusti ekipi da ti smisli prijateljski nadimak do kraja igre.'],
-        ['dare', 'Glumi petnaest sekundi da vodiš dodjelu nagrade za najboljeg prijatelja.'],
-        ['dare', 'Izaberi dvije osobe koje bi poveo/la na pusto ostrvo i obrazloži izbor.'],
-        ['dare', 'Napravi zajedničku fotografsku pozu s osobom desno od sebe.'],
-        ['dare', 'Prepričaj jednu uspomenu s ekipom kao sportski komentator.'],
-        ['dare', 'Smisli kratku zdravicu posvećenu prijateljstvu.'],
-        ['dare', 'Pokaži kako izgleda tvoj ples kada izađeš s najboljom ekipom.'],
-        ['dare', 'Nabroji pet stvari koje dobar prijatelj nikada ne radi.'],
-        ['dare', 'Izaberi prijatelja i pokušaj ga nasmijati bez dodirivanja.'],
+        ['truth', 'Koji ti se najsmješniji peh dogodio pred drugim ljudima?'],
+        ['truth', 'Jesi li se ikada smijao/la u trenutku kada nije trebalo?'],
+        ['truth', 'Koju si riječ najduže pogrešno izgovarao/la?'],
+        ['truth', 'Koji je najčudniji san kojeg se još sjećaš?'],
+        ['truth', 'Jesi li ikada mahnuo/la osobi koja uopšte nije mahala tebi?'],
+        ['truth', 'Koji tvoj plesni pokret uvijek nasmije ekipu?'],
+        ['truth', 'Koji si izgovor smislio/la, a niko ti nije povjerovao?'],
+        ['truth', 'Šta si najčudnije uradio/la kada si mislio/la da te niko ne gleda?'],
+        ['truth', 'Koji te video ili šala može nasmijati svaki put?'],
+        ['truth', 'Jesi li ikada ušao/la u pogrešnu prostoriju kao da znaš gdje ideš?'],
+        ['truth', 'Koji ti je najsmješniji nadimak neko dao?'],
+        ['truth', 'Koja je najčudnija kombinacija hrane koju voliš?'],
+        ['truth', 'Jesi li ikada poslao/la poruku pogrešnoj osobi?'],
+        ['truth', 'Koju bi svoju neugodnu situaciju danas rado ponovio/la zbog smijeha?'],
+        ['truth', 'Koji član ekipe ima najsmješniji izraz lica?'],
+        ['truth', 'Kada si se posljednji put smijao/la toliko da nisi mogao/la govoriti?'],
+        ['truth', 'Koju pjesmu uvijek pjevaš pogrešnim riječima?'],
+        ['truth', 'Koja ti je najčudnija navika kada si sam/a?'],
+        ['truth', 'Jesi li ikada pokušao/la izgledati kul pa se osramotio/la?'],
+        ['truth', 'Koja porodična anegdota o tebi se najčešće prepričava?'],
+        ['dare', 'Odglumi kako izgleda kada se oklizneš, ali pokušavaš ostati ozbiljan/na.'],
+        ['dare', 'Ispričaj običnu rečenicu kao pretjerano dramatičan filmski negativac.'],
+        ['dare', 'Hodaj deset sekundi kao pingvin koji kasni na autobus.'],
+        ['dare', 'Napravi tri najsmješnija izraza lica bez ponavljanja.'],
+        ['dare', 'Imitiraj alarm za buđenje koji postaje sve nervozniji.'],
+        ['dare', 'Pokušaj prodati običnu čarapu kao luksuzni proizvod.'],
+        ['dare', 'Otpjevaj svoje ime kao refren velike pop pjesme.'],
+        ['dare', 'Odglumi usporeni snimak hvatanja zamišljene lopte.'],
+        ['dare', 'Govori sljedećih trideset sekundi kao voditelj vremenske prognoze.'],
+        ['dare', 'Izmisli smiješan pozdrav i nauči osobu do sebe da ga ponovi.'],
+        ['dare', 'Pokaži kako bi robot pokušao plesati kolo.'],
+        ['dare', 'Ispričaj vic bez smijanja dok te ostali pokušavaju nasmijati.'],
+        ['dare', 'Odglumi mačku koja je upravo ugledala krastavac.'],
+        ['dare', 'Napravi reklamu za nevidljivi kišobran u deset sekundi.'],
+        ['dare', 'Pročitaj posljednju rečenicu koju si rekao/la glasom crtanog junaka.'],
+        ['dare', 'Zamisli da je pod lava i pređi na drugu stranu kruga.'],
+        ['dare', 'Smisli kratku pjesmicu o osobi s lijeve strane.'],
+        ['dare', 'Glumi sportskog komentatora dok neko iz ekipe ustaje sa stolice.'],
+        ['dare', 'Pokušaj objasniti šta je kašika kao da je vanzemaljski predmet.'],
+        ['dare', 'Nasmij osobu preko puta koristeći samo jedan zvuk.'],
     ];
 
     public const RATHER_QUESTIONS = [
-        ['Imati psa koji može govoriti', 'Imati mačku koja može čitati misli'],
-        ['Letjeti na leđima orla', 'Plivati uz delfine'],
-        ['Provesti dan kao lav', 'Provesti dan kao vuk'],
-        ['Imati slona veličine psa', 'Imati psa veličine slona'],
-        ['Živjeti s pingvinima na ledu', 'Živjeti s devama u pustinji'],
-        ['Razumjeti samo ptice', 'Razumjeti samo morske životinje'],
-        ['Trčati brzo kao gepard', 'Skakati visoko kao kengur'],
-        ['Imati pamćenje slona', 'Imati vid orla'],
-        ['Biti nježan/na kao panda', 'Biti hrabar/ra kao tigar'],
-        ['Čuvati mladunče lava', 'Čuvati mladunče medvjeda'],
-        ['Jahati konja kroz planine', 'Voziti se saonicama koje vuku haskiji'],
-        ['Imati vrt pun leptira', 'Imati jezero puno šarenih riba'],
-        ['Spavati u kućici među majmunima', 'Spavati u podvodnoj sobi među ajkulama'],
-        ['Biti veterinar u zoološkom vrtu', 'Biti biolog u morskom rezervatu'],
-        ['Vidjeti kita izbliza', 'Vidjeti žirafu u divljini'],
-        ['Imati rep poput pauna', 'Mijenjati boju poput kameleona'],
-        ['Kretati se sporo kao kornjača', 'Spavati dugo kao medvjed'],
-        ['Hraniti rakuna iz ruke', 'Držati ježa u krilu'],
-        ['Čuti sovu svake noći', 'Čuti pijetla svakog jutra'],
-        ['Imati papagaja koji ponavlja sve', 'Imati vranu koja ti donosi sitnice'],
-        ['Roniti s morskim kornjačama', 'Veslati pored krokodila'],
-        ['Biti vođa čopora vukova', 'Biti vođa krda slonova'],
-        ['Imati farmu s deset koza', 'Imati dvorište s deset pasa'],
-        ['Maziti koalu', 'Hraniti pandu bambusom'],
-        ['Pratiti tragove lisice u snijegu', 'Posmatrati jelene u šumi'],
-        ['Imati krila leptira', 'Imati oklop kornjače'],
-        ['Biti malen/a kao mrav', 'Biti visok/a kao žirafa'],
-        ['Graditi branu s dabrovima', 'Skupljati orahe s vjevericama'],
-        ['Plivati brzo kao ajkula', 'Zaroniti duboko kao kit'],
-        ['Imati sedam života kao mačka', 'Uvijek pronaći put kući kao golub'],
-        ['Čuvati napuštene pse', 'Pomagati povrijeđenim divljim životinjama'],
-        ['Gledati izlazak mladih kornjača iz jaja', 'Gledati prve korake mladunčeta žirafe'],
-        ['Živjeti godinu dana bez kućnog ljubimca', 'Svaki dan čistiti za pet ljubimaca'],
-        ['Da te prati jato pataka', 'Da te prati porodica zečeva'],
-        ['Imati miris psa tragača', 'Imati sluh šišmiša'],
-        ['Provesti noć u šumi sa sovama', 'Provesti noć na plaži s rakovima'],
-        ['Fotografisati tigra u divljini', 'Snimiti ajkulu pod vodom'],
-        ['Udomiti starog psa', 'Udomiti plašljivu mačku'],
-        ['Znati gdje se krije svaka životinja', 'Znati šta svaka životinja sanja'],
-        ['Zaštititi jednu ugroženu vrstu', 'Očistiti cijelu plažu za morske životinje'],
+        ['Putovati na Mjesec', 'Putovati na Mars'],
+        ['Vidjeti prstenove Saturna izbliza', 'Prošetati površinom Venere'],
+        ['Biti astronaut', 'Biti astronom'],
+        ['Živjeti u svemirskoj stanici', 'Živjeti u bazi na Mjesecu'],
+        ['Otkriti novu planetu', 'Otkriti novu galaksiju'],
+        ['Voziti svemirski brod', 'Upravljati robotom na Marsu'],
+        ['Imati teleskop koji vidi prošlost', 'Imati raketu koja leti brže od svjetlosti'],
+        ['Sresti prijateljske vanzemaljce', 'Pronaći tragove drevnog života'],
+        ['Gledati pomračenje Sunca iz svemira', 'Gledati polarnu svjetlost s Mjeseca'],
+        ['Lebdjeti bez gravitacije cijeli dan', 'Skakati šest puta više na Mjesecu'],
+        ['Ponijeti psa u svemir', 'Ponijeti mačku u svemir'],
+        ['Nazvati novu zvijezdu', 'Nazvati novi mjesec'],
+        ['Spavati pored prozora svemirske stanice', 'Kampovati pod zvijezdama na Marsu'],
+        ['Fotografisati crnu rupu', 'Snimiti eksploziju supernove'],
+        ['Imati odijelo astronauta', 'Imati vlastiti mali satelit'],
+        ['Putovati kroz asteroidni pojas', 'Proletjeti kroz rep komete'],
+        ['Znati odgovor kako je svemir nastao', 'Znati postoji li život izvan Zemlje'],
+        ['Razgovarati s astronautom', 'Razgovarati s naučnikom koji proučava svemir'],
+        ['Posjetiti najveću planetu', 'Posjetiti najmanju planetu'],
+        ['Vidjeti Zemlju s Mjeseca', 'Vidjeti Sunce s Merkura'],
+        ['Imati sobu poput svemirskog broda', 'Imati dvorište poput druge planete'],
+        ['Nositi svemirsku hranu sedmicu', 'Spavati u vreći pričvršćenoj za zid sedmicu'],
+        ['Čuti zvukove svemira', 'Vidjeti nevidljive boje zvijezda'],
+        ['Biti prvi čovjek na novoj planeti', 'Biti kapetan prve svemirske kolonije'],
+        ['Istraživati ledeni mjesec', 'Istraživati vrelu planetu'],
+        ['Pronaći vodu na Marsu', 'Pronaći biljku na drugoj planeti'],
+        ['Imati robota astronauta', 'Imati vanzemaljskog ljubimca'],
+        ['Proslaviti rođendan u svemiru', 'Dočekati Novu godinu na Mjesecu'],
+        ['Gledati hiljadu zvijezda padalica', 'Vidjeti jednu kometu iz velike blizine'],
+        ['Putovati sto godina u budućnost', 'Putovati do najbliže zvijezde'],
+        ['Graditi raketu', 'Dizajnirati svemirsko odijelo'],
+        ['Letjeti pored Jupitera', 'Sletjeti na jedan Saturnov mjesec'],
+        ['Jesti sladoled bez gravitacije', 'Piti sok na Mjesecu'],
+        ['Imati kartu cijele galaksije', 'Imati uzorak kamena s Marsa'],
+        ['Probuditi se na svemirskom brodu', 'Probuditi se u opservatoriji'],
+        ['Posmatrati zvijezde svake noći', 'Jednom vidjeti Zemlju iz orbite'],
+        ['Otkriti planetu nalik Zemlji', 'Otkriti potpuno novu vrstu zvijezde'],
+        ['Biti poznat/a po svemirskom otkriću', 'Tajno istraživati nepoznatu planetu'],
+        ['Imati gravitaciju samo kada želiš', 'Moći disati na svakoj planeti'],
+        ['Vratiti se kući nakon godine u svemiru', 'Nastaviti istraživanje još pet godina'],
     ];
 
     public static function add(): void
@@ -129,7 +135,7 @@ final class StarterFreeContent
 
     private static function insertWords(string $categoryTable, string $itemTable, string $foreignKey, bool $impostor): void
     {
-        $categoryId = DB::table($categoryTable)->where('slug', 'zivotinje')->value('id');
+        $categoryId = DB::table($categoryTable)->where('slug', 'priroda')->value('id');
         if (!$categoryId) return;
         $now = now();
         foreach (self::IMPOSTOR_WORDS as [$word, $hint]) {
@@ -145,14 +151,14 @@ final class StarterFreeContent
 
     private static function deleteWords(string $categoryTable, string $itemTable, string $foreignKey): void
     {
-        $categoryId = DB::table($categoryTable)->where('slug', 'zivotinje')->value('id');
+        $categoryId = DB::table($categoryTable)->where('slug', 'priroda')->value('id');
         if ($categoryId) DB::table($itemTable)->where($foreignKey, $categoryId)
             ->whereIn('word', array_column(self::IMPOSTOR_WORDS, 0))->delete();
     }
 
     private static function insertRows(string $categoryTable, string $itemTable, string $foreignKey, array $items, callable $map, array $identity): void
     {
-        $slug = $categoryTable === 'truth_dare_categories' ? 'prijateljstvo' : 'zivotinje';
+        $slug = $categoryTable === 'truth_dare_categories' ? 'smijesne-situacije' : 'svemir';
         $categoryId = DB::table($categoryTable)->where('slug', $slug)->value('id');
         if (!$categoryId) return;
         $now = now();
@@ -168,7 +174,7 @@ final class StarterFreeContent
 
     private static function deleteRows(string $categoryTable, string $itemTable, string $foreignKey, array $items, callable $map): void
     {
-        $slug = $categoryTable === 'truth_dare_categories' ? 'prijateljstvo' : 'zivotinje';
+        $slug = $categoryTable === 'truth_dare_categories' ? 'smijesne-situacije' : 'svemir';
         $categoryId = DB::table($categoryTable)->where('slug', $slug)->value('id');
         if (!$categoryId) return;
         foreach ($items as $item) {

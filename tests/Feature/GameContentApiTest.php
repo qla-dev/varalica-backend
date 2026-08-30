@@ -31,9 +31,14 @@ class GameContentApiTest extends TestCase
                 ->assertJsonCount(20, 'data')
                 ->assertJsonPath('data.0.subcategory.id', fn ($id) => is_int($id))
                 ->assertJsonPath('data.0.subtitle', fn ($subtitle) => is_string($subtitle) && $subtitle !== '')
-                ->assertJsonPath('data.0.is_free', true)
                 ->assertJsonPath('data.0.color', fn ($color) => is_string($color) && str_starts_with($color, '#'))
                 ->assertJsonPath('data.0.emoji', fn ($emoji) => is_string($emoji) && $emoji !== '');
+
+            $this->assertCount(
+                1,
+                collect($this->getJson("/api/{$game}/categories")->json('data'))
+                    ->where('is_free', true),
+            );
 
             $this->getJson("/api/{$game}/subcategories")
                 ->assertOk()
@@ -49,7 +54,7 @@ class GameContentApiTest extends TestCase
 
     public function test_content_can_be_filtered_by_category_and_type(): void
     {
-        $this->getJson('/api/impostor/words?category=zivotinje')
+        $this->getJson('/api/impostor/words?category=priroda')
             ->assertOk()
             ->assertJsonCount(50, 'data');
 
@@ -60,6 +65,6 @@ class GameContentApiTest extends TestCase
         $subcategoryId = $this->getJson('/api/impostor/subcategories')->json('data.0.id');
         $this->getJson("/api/impostor/words?subcategory_id={$subcategoryId}")
             ->assertOk()
-            ->assertJsonCount(110, 'data');
+            ->assertJsonCount(70, 'data');
     }
 }

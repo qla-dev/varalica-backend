@@ -50,9 +50,9 @@ class GameContentSeederTest extends TestCase
 
         $this->assertSame(120, DB::table('truth_dare_questions')->where('type', 'truth')->count());
         $this->assertSame(120, DB::table('truth_dare_questions')->where('type', 'dare')->count());
-        $this->assertSame(50, DB::table('impostor_words')->where('impostor_category_id', 1)->count());
-        $this->assertSame(50, DB::table('truth_dare_questions')->where('truth_dare_category_id', 1)->count());
-        $this->assertSame(50, DB::table('rather_questions')->where('rather_category_id', 1)->count());
+        $this->assertCategoryItemCount('impostor', 'words', 'priroda', 50);
+        $this->assertCategoryItemCount('truth_dare', 'questions', 'smijesne-situacije', 50);
+        $this->assertCategoryItemCount('rather', 'questions', 'svemir', 50);
     }
 
     public function test_seeded_items_are_connected_to_their_categories(): void
@@ -84,7 +84,7 @@ class GameContentSeederTest extends TestCase
         $this->assertDatabaseHas('impostor_words', ['word' => 'Lubenica', 'hint' => 'Ljetno voće']);
     }
 
-    public function test_free_starter_expansion_contains_forty_unique_items_per_active_game(): void
+    public function test_monthly_free_expansion_contains_forty_unique_items_per_active_game(): void
     {
         $impostorWords = array_column(StarterFreeContent::IMPOSTOR_WORDS, 0);
         $truthDareQuestions = array_column(StarterFreeContent::TRUTH_DARE, 1);
@@ -105,5 +105,17 @@ class GameContentSeederTest extends TestCase
         foreach (StarterFreeContent::IMPOSTOR_WORDS as [$word, $hint]) {
             $this->assertCount(2, preg_split('/\s+/u', trim($hint)), "Hint za {$word} mora imati dvije riječi.");
         }
+    }
+
+    private function assertCategoryItemCount(string $game, string $resource, string $slug, int $count): void
+    {
+        $categoryId = DB::table("{$game}_categories")->where('slug', $slug)->value('id');
+
+        $this->assertNotNull($categoryId);
+        $this->assertSame(
+            $count,
+            DB::table("{$game}_{$resource}")->where("{$game}_category_id", $categoryId)->count(),
+        );
+        $this->assertTrue((bool) DB::table("{$game}_categories")->where('id', $categoryId)->value('is_free'));
     }
 }
