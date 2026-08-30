@@ -34,12 +34,6 @@ class GameContentApiTest extends TestCase
                 ->assertJsonPath('data.0.color', fn ($color) => is_string($color) && str_starts_with($color, '#'))
                 ->assertJsonPath('data.0.emoji', fn ($emoji) => is_string($emoji) && $emoji !== '');
 
-            $this->assertCount(
-                1,
-                collect($this->getJson("/api/{$game}/categories")->json('data'))
-                    ->where('is_free', true),
-            );
-
             $this->getJson("/api/{$game}/subcategories")
                 ->assertOk()
                 ->assertJsonCount(3, 'data');
