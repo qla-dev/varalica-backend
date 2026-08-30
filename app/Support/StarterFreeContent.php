@@ -29,6 +29,29 @@ final class StarterFreeContent
         ['Kamenčić', 'Mali kamen'], ['Blato', 'Mokra zemlja'],
     ];
 
+    public const IMPOSTOR_SCHOOL_WORDS = [
+        ['Profesor', 'Školski nastavnik'], ['Učenik', 'Mladi polaznik'],
+        ['Dnevnik', 'Evidencija ocjena'], ['Zadaća', 'Kućni zadatak'],
+        ['Test', 'Provjera znanja'], ['Ocjena', 'Školski rezultat'],
+        ['Klupa', 'Školski namještaj'], ['Kreda', 'Bijeli štapić'],
+        ['Marker', 'Šarena olovka'], ['Pernica', 'Čuva pribor'],
+        ['Udžbenik', 'Školska knjiga'], ['Atlas', 'Zbirka karata'],
+        ['Globus', 'Model Zemlje'], ['Kalkulator', 'Računski uređaj'],
+        ['Mikroskop', 'Uvećava predmete'], ['Laboratorija', 'Naučna učionica'],
+        ['Biblioteka', 'Pozajmljuje knjige'], ['Hodnik', 'Školski prolaz'],
+        ['Zvono', 'Označava odmor'], ['Direktor', 'Vodi školu'],
+        ['Pedagog', 'Pomaže učenicima'], ['Sekretar', 'Školska administracija'],
+        ['Čuvar', 'Školska sigurnost'], ['Kantina', 'Školska kuhinja'],
+        ['Uniforma', 'Jednaka odjeća'], ['Ekskurzija', 'Školsko putovanje'],
+        ['Matura', 'Završna proslava'], ['Svjedočanstvo', 'Pregled ocjena'],
+        ['Diploma', 'Potvrda uspjeha'], ['Raspored', 'Plan časova'],
+        ['Predmet', 'Oblast učenja'], ['Čas', 'Vrijeme nastave'],
+        ['Diktat', 'Pisana vježba'], ['Sastav', 'Pismeni rad'],
+        ['Lektira', 'Obavezna knjiga'], ['Geometrija', 'Nauka oblika'],
+        ['Historija', 'Prošli događaji'], ['Geografija', 'Proučava Zemlju'],
+        ['Biologija', 'Proučava život'], ['Hemija', 'Proučava materiju'],
+    ];
+
     public const TRUTH_DARE = [
         ['truth', 'Koji ti se najsmješniji peh dogodio pred drugim ljudima?'],
         ['truth', 'Jesi li se ikada smijao/la u trenutku kada nije trebalo?'],
@@ -117,7 +140,8 @@ final class StarterFreeContent
 
     public static function add(): void
     {
-        self::insertWords('impostor_categories', 'impostor_words', 'impostor_category_id', true);
+        self::insertWords('impostor_categories', 'impostor_words', 'impostor_category_id', 'priroda', self::IMPOSTOR_WORDS);
+        self::insertWords('impostor_categories', 'impostor_words', 'impostor_category_id', 'skola', self::IMPOSTOR_SCHOOL_WORDS);
         self::insertRows('truth_dare_categories', 'truth_dare_questions', 'truth_dare_category_id', self::TRUTH_DARE,
             fn (array $item) => ['type' => $item[0], 'question' => $item[1]], ['type', 'question']);
         self::insertRows('rather_categories', 'rather_questions', 'rather_category_id', self::RATHER_QUESTIONS,
@@ -126,34 +150,35 @@ final class StarterFreeContent
 
     public static function remove(): void
     {
-        self::deleteWords('impostor_categories', 'impostor_words', 'impostor_category_id');
+        self::deleteWords('impostor_categories', 'impostor_words', 'impostor_category_id', 'priroda', self::IMPOSTOR_WORDS);
+        self::deleteWords('impostor_categories', 'impostor_words', 'impostor_category_id', 'skola', self::IMPOSTOR_SCHOOL_WORDS);
         self::deleteRows('truth_dare_categories', 'truth_dare_questions', 'truth_dare_category_id', self::TRUTH_DARE,
             fn (array $item) => ['type' => $item[0], 'question' => $item[1]]);
         self::deleteRows('rather_categories', 'rather_questions', 'rather_category_id', self::RATHER_QUESTIONS,
             fn (array $item) => ['option_a' => $item[0], 'option_b' => $item[1]]);
     }
 
-    private static function insertWords(string $categoryTable, string $itemTable, string $foreignKey, bool $impostor): void
+    private static function insertWords(string $categoryTable, string $itemTable, string $foreignKey, string $slug, array $items): void
     {
-        $categoryId = DB::table($categoryTable)->where('slug', 'priroda')->value('id');
+        $categoryId = DB::table($categoryTable)->where('slug', $slug)->value('id');
         if (!$categoryId) return;
         $now = now();
-        foreach (self::IMPOSTOR_WORDS as [$word, $hint]) {
+        foreach ($items as [$word, $hint]) {
             DB::table($itemTable)->insertOrIgnore([
                 $foreignKey => $categoryId,
                 'word' => $word,
-                'hint' => $impostor ? $hint : "Objasni pojam bez izgovaranja riječi {$word}",
+                'hint' => $hint,
                 'created_at' => $now,
                 'updated_at' => $now,
             ]);
         }
     }
 
-    private static function deleteWords(string $categoryTable, string $itemTable, string $foreignKey): void
+    private static function deleteWords(string $categoryTable, string $itemTable, string $foreignKey, string $slug, array $items): void
     {
-        $categoryId = DB::table($categoryTable)->where('slug', 'priroda')->value('id');
+        $categoryId = DB::table($categoryTable)->where('slug', $slug)->value('id');
         if ($categoryId) DB::table($itemTable)->where($foreignKey, $categoryId)
-            ->whereIn('word', array_column(self::IMPOSTOR_WORDS, 0))->delete();
+            ->whereIn('word', array_column($items, 0))->delete();
     }
 
     private static function insertRows(string $categoryTable, string $itemTable, string $foreignKey, array $items, callable $map, array $identity): void

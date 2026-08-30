@@ -22,7 +22,7 @@ class GameContentSeederTest extends TestCase
 
         $expectedCounts = [
             'impostor_categories' => 20,
-            'impostor_words' => 240,
+            'impostor_words' => 280,
             'impostor_subcategories' => 3,
             'truth_dare_categories' => 20,
             'truth_dare_questions' => 240,
@@ -50,6 +50,7 @@ class GameContentSeederTest extends TestCase
         $this->assertSame(120, DB::table('truth_dare_questions')->where('type', 'truth')->count());
         $this->assertSame(120, DB::table('truth_dare_questions')->where('type', 'dare')->count());
         $this->assertCategoryItemCount('impostor', 'words', 'priroda', 50);
+        $this->assertCategoryItemCount('impostor', 'words', 'skola', 50);
         $this->assertCategoryItemCount('truth_dare', 'questions', 'smijesne-situacije', 50);
         $this->assertCategoryItemCount('rather', 'questions', 'svemir', 50);
     }
@@ -75,7 +76,7 @@ class GameContentSeederTest extends TestCase
         $this->seed();
 
         $hints = ImpostorWord::query()->pluck('hint');
-        $this->assertCount(240, $hints);
+        $this->assertCount(280, $hints);
         foreach ($hints as $hint) {
             $this->assertCount(2, preg_split('/\s+/u', trim($hint)));
         }
@@ -102,6 +103,13 @@ class GameContentSeederTest extends TestCase
         $this->assertCount(20, array_filter(StarterFreeContent::TRUTH_DARE, fn (array $item) => $item[0] === 'dare'));
 
         foreach (StarterFreeContent::IMPOSTOR_WORDS as [$word, $hint]) {
+            $this->assertCount(2, preg_split('/\s+/u', trim($hint)), "Hint za {$word} mora imati dvije riječi.");
+        }
+
+        $schoolWords = array_column(StarterFreeContent::IMPOSTOR_SCHOOL_WORDS, 0);
+        $this->assertCount(40, $schoolWords);
+        $this->assertCount(40, array_unique(array_map('mb_strtolower', $schoolWords)));
+        foreach (StarterFreeContent::IMPOSTOR_SCHOOL_WORDS as [$word, $hint]) {
             $this->assertCount(2, preg_split('/\s+/u', trim($hint)), "Hint za {$word} mora imati dvije riječi.");
         }
     }

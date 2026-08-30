@@ -18,7 +18,7 @@ class GameContentApiTest extends TestCase
     public function test_each_game_exposes_categories_and_content(): void
     {
         $routes = [
-            'impostor' => ['words', 240],
+            'impostor' => ['words', 280],
             'truth-dare' => ['questions', 240],
             'rather' => ['questions', 240],
             'dva-srca' => ['questions', 200],
@@ -52,6 +52,10 @@ class GameContentApiTest extends TestCase
             ->assertOk()
             ->assertJsonCount(50, 'data');
 
+        $this->getJson('/api/impostor/words?category=skola')
+            ->assertOk()
+            ->assertJsonCount(50, 'data');
+
         $this->getJson('/api/truth-dare/questions?type=truth')
             ->assertOk()
             ->assertJsonCount(120, 'data');
@@ -59,6 +63,6 @@ class GameContentApiTest extends TestCase
         $subcategoryId = $this->getJson('/api/impostor/subcategories')->json('data.0.id');
         $this->getJson("/api/impostor/words?subcategory_id={$subcategoryId}")
             ->assertOk()
-            ->assertJsonCount(70, 'data');
+            ->assertJsonCount(110, 'data');
     }
 }
