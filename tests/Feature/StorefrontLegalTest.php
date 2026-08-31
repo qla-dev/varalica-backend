@@ -9,8 +9,15 @@ class StorefrontLegalTest extends TestCase
     public function test_apple_download_redirects_to_the_app_store(): void
     {
         $this->get('/apple-download')->assertRedirect(
-            'https://apps.apple.com/us/app/varalica-imposter-igrica/id6784401796'
+            'https://apps.apple.com/app/varalica-imposter-igrica/id6784401796?l=hr'
         );
+    }
+
+    public function test_download_page_is_available_for_platform_detection(): void
+    {
+        $this->get('/download')
+            ->assertOk()
+            ->assertHeader('Content-Type', 'text/html; charset=UTF-8');
     }
 
     public function test_legal_pages_are_available(): void
@@ -33,6 +40,8 @@ class StorefrontLegalTest extends TestCase
         $this->assertStringContainsString('Politika privatnosti', $bundle);
         $this->assertStringContainsString('Uslovi korištenja', $bundle);
         $this->assertStringContainsString('Politika kolačića', $bundle);
-        $this->assertStringContainsString('/apple-download', $bundle);
+        $this->assertStringContainsString('/download', $bundle);
+        $this->assertStringContainsString('https://apps.apple.com/app/varalica-imposter-igrica/id6784401796?l=hr', $bundle);
+        $this->assertStringContainsString('https://play.google.com/store/apps/details?id=varalica.qla.dev', $bundle);
     }
 }

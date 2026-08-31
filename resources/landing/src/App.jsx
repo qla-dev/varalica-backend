@@ -17,8 +17,24 @@ import word from '../../../../raja/assets/games/word.webp';
 import music from '../../../../raja/assets/games/music.webp';
 import qlaLogo from '../../../../../tap/public/images/logo-qla.png';
 
-const APP_STORE_URL = import.meta.env.VITE_APP_STORE_URL || '/apple-download';
+const DOWNLOAD_PATH = '/download';
+const APP_STORE_URL = import.meta.env.VITE_APP_STORE_URL || 'https://apps.apple.com/app/varalica-imposter-igrica/id6784401796?l=hr';
 const PLAY_STORE_URL = import.meta.env.VITE_PLAY_STORE_URL || 'https://play.google.com/store/apps/details?id=varalica.qla.dev';
+
+function detectStorePlatform() {
+  const userAgent = navigator.userAgent || '';
+  const platform = navigator.platform || '';
+  const isIpadOS = platform === 'MacIntel' && navigator.maxTouchPoints > 1;
+
+  if (/Android/i.test(userAgent)) return 'android';
+  if (/iPhone|iPad|iPod/i.test(userAgent) || isIpadOS) return 'ios';
+
+  return null;
+}
+
+function storeUrl(platform) {
+  return platform === 'ios' ? APP_STORE_URL : PLAY_STORE_URL;
+}
 
 const games = [
   { title: 'Pronađi Varalicu', players: '3–12 igrača', color: '#f97316', image: impostor, live: true },
@@ -133,6 +149,7 @@ function LegalPage({ page }) {
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [storeChoiceOpen, setStoreChoiceOpen] = useState(false);
   const [showAll, setShowAll] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -144,9 +161,28 @@ function App() {
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = menuOpen ? 'hidden' : '';
+    document.body.style.overflow = menuOpen || storeChoiceOpen ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
-  }, [menuOpen]);
+  }, [menuOpen, storeChoiceOpen]);
+
+  useEffect(() => {
+    if (window.location.pathname.replace(/\/$/, '') !== DOWNLOAD_PATH) return;
+
+    const platform = detectStorePlatform();
+
+    if (platform) {
+      window.location.replace(storeUrl(platform));
+      return;
+    }
+
+    window.history.replaceState({}, '', '/');
+    setStoreChoiceOpen(true);
+  }, []);
+
+  const chooseStore = (platform) => {
+    setStoreChoiceOpen(false);
+    window.location.href = storeUrl(platform);
+  };
 
   const closeMenu = () => setMenuOpen(false);
   const legalPage = legalPages[window.location.pathname.replace(/^\//, '').replace(/\/$/, '')];
@@ -162,14 +198,14 @@ function App() {
           <a href="#kako">Kako radi</a>
           <a href="#isprobaj">Isprobaj</a>
         </nav>
-        <a className="header-cta" href="#preuzmi"><Download /> Preuzmi</a>
+        <a className="header-cta" href={DOWNLOAD_PATH}><Download /> Preuzmi</a>
         <button className="menu-button" onClick={() => setMenuOpen(true)} aria-label="Otvori meni"><Menu /></button>
       </header>
 
       {menuOpen && <div className="mobile-menu">
         <button onClick={closeMenu} aria-label="Zatvori meni"><X /></button>
         <Brand />
-        <nav><a onClick={closeMenu} href="#igre">Igre</a><a onClick={closeMenu} href="#kako">Kako radi</a><a onClick={closeMenu} href="#isprobaj">Isprobaj</a><a onClick={closeMenu} href="#preuzmi">Preuzmi</a></nav>
+        <nav><a onClick={closeMenu} href="#igre">Igre</a><a onClick={closeMenu} href="#kako">Kako radi</a><a onClick={closeMenu} href="#isprobaj">Isprobaj</a><a onClick={closeMenu} href={DOWNLOAD_PATH}>Preuzmi</a></nav>
       </div>}
 
       <section className="hero">
@@ -268,9 +304,22 @@ function App() {
       </section>
 
       <footer>
-        <div className="footer-top"><Brand/><p>Jedan telefon.<br/>Cijela ekipa.</p><nav><a href="#igre">Igre</a><a href="#kako">Kako radi</a><a href="#preuzmi">Preuzmi</a></nav></div>
+        <div className="footer-top"><Brand/><p>Jedan telefon.<br/>Cijela ekipa.</p><nav><a href="#igre">Igre</a><a href="#kako">Kako radi</a><a href={DOWNLOAD_PATH}>Preuzmi</a></nav></div>
         <div className="footer-bottom"><span>© {new Date().getFullYear()} Varalica. Sva prava zadržana.</span><a className="qla-signature" href="https://qla.dev" target="_blank" rel="noreferrer"><span>Proizvod</span><img src={qlaLogo} alt="qla.dev" /></a><div><a href="mailto:hello@qla.dev">Kontakt</a><a href="/privacy">Privatnost</a><a href="/terms">Uslovi korištenja</a><a href="/cookies">Kolačići</a></div></div>
       </footer>
+
+      {storeChoiceOpen && <div className="store-modal" role="dialog" aria-modal="true" aria-labelledby="store-modal-title" onClick={() => setStoreChoiceOpen(false)}>
+        <div className="store-modal-card" onClick={(event) => event.stopPropagation()}>
+          <button className="store-modal-close" onClick={() => setStoreChoiceOpen(false)} aria-label="Zatvori"><X /></button>
+          <div className="store-modal-icon"><Download /></div>
+          <h2 id="store-modal-title">Preuzmi Varalicu</h2>
+          <p>Odaberi platformu za svoj telefon.</p>
+          <div className="store-modal-actions">
+            <button onClick={() => chooseStore('ios')}><Apple /> iOS</button>
+            <button onClick={() => chooseStore('android')}><Play fill="currentColor" /> Android</button>
+          </div>
+        </div>
+      </div>}
     </main>
   );
 }
